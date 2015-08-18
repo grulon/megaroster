@@ -23,7 +23,11 @@ var Megaroster = function() {
   };
 
   this.appendToList = function(student_name) {
-    $('#students').append('<li class="list-group-item">' + student_name + '</li>');
+    //Grab TEMPLATE LI from page.
+    var li = $("#list_item_template").clone();
+    li.removeAttr('id').addClass('student').prepend(student_name).removeClass('hidden');
+
+    $('#students').append(li);
   };
 
   this.addStudent = function(student_name) {
@@ -39,13 +43,28 @@ var Megaroster = function() {
     self.students = [];
     self.load();
 
-    $('#new_student_form').on('submit', function(ev){
+    $(document).on('click', 'button.delete',function(ev) {
+      //remove student from array
+      // console.log($(this).closest('li').val());
+      // self.students.splice(self.students.indexOf($.inArray($(this).closest('li').val()), self.students),1);
+      // console.log($.map(self.students));
+
+      //remove student from list
+      $(this).closest('li').remove();
+      //Update localStorage
+      self.save();
+
+    });
+
+
+    $('#new_student_form').on('submit', function(ev){       //'submit' is which event you are listening for... could be click or keypress.
       ev.preventDefault();
       var student_name = $(this.student_name).val();
 
       self.addStudent(student_name);
       //clear field
       $(this.student_name).val('').focus();
+
 
     });
   };

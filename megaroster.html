@@ -5,6 +5,7 @@
     <title>Mega Awesome Mega Roster!!!</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/megaroster.css" charset="utf-8">
     <!--[if lt IE 9]>
   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>;
@@ -15,7 +16,9 @@
     <div class="well col-sm-8 col-sm-offset-2 col-xs-12">
       <h1>Megaroster</h1>
       <ol id="students" class="list-group">
-        <!-- <li class="list-group-item">Christopher Long</li> -->
+        <li id="list_item_template" class="list-group-item hidden">
+          <button class="btn btn-sm btn-danger delete"><i class="fa fa-trash-o"></i></button>
+        </li>
       </ol>
       <form role="form" id="new_student_form" class="form-inline">
         <label>
@@ -24,8 +27,6 @@
         </label>
       </form>
     </div>
-
-
 
 
 
