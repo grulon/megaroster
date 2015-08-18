@@ -13,8 +13,10 @@ var Megaroster = function() {
   this.load = function() {
     try{
       self.students = JSON.parse(localStorage.students);
-      $.each(self.students, function(index, student_name) {
-          self.appendToList(student_name);
+      $.each(self.students, function(index, student_data) {
+        var student = new Student();
+        student.init(student_data.name);
+        student.appendToList();
       } );
     }
     catch(err) {
@@ -22,21 +24,19 @@ var Megaroster = function() {
     }
   };
 
-  this.appendToList = function(student_name) {
-    //Grab TEMPLATE LI from page.
-    var li = $("#list_item_template").clone();
-    li.removeAttr('id').addClass('student').prepend(student_name).removeClass('hidden');
-
-    $('#students').append(li);
-  };
+  // this.appendToList = function(student_name) {
+  //   //Grab TEMPLATE LI from page.
+  //   var li = $("#list_item_template").clone();
+  //   li.removeAttr('id').addClass('student').prepend(student_name).removeClass('hidden');
+  //   $('#students').append(li);
+  // };
 
   this.addStudent = function(student_name) {
-      if(student_name.trim() !== "") {
-        self.students.push(student_name);
-        //add student to list
-        self.appendToList(student_name);
-        console.log(self.save());
-      }
+    var student = new Student();
+    student.init(student_name);
+    self.students.push(student);
+    student.appendToList();
+    self.save();
   };
 
   this.init = function() {
@@ -45,9 +45,6 @@ var Megaroster = function() {
 
     $(document).on('click', 'button.delete',function(ev) {
       //remove student from array
-      // console.log($(this).closest('li').val());
-      // self.students.splice(self.students.indexOf($.inArray($(this).closest('li').val()), self.students),1);
-      // console.log($.map(self.students));
 
       //remove student from list
       $(this).closest('li').remove();
