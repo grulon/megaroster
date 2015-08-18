@@ -12,11 +12,12 @@ var Megaroster = function() {
 
   this.load = function() {
     try{
-      self.students = JSON.parse(localStorage.students);
-      $.each(self.students, function(index, student_data) {
+      var student_data_objects = JSON.parse(localStorage.students);
+      $.each(student_data_objects, function(index, student_data) {
         var student = new Student();
         student.init(student_data);
         student.appendToList();
+        self.students.push(student);    //needed to convert the json to student objects before saving to array.
       } );
     }
     catch(err) {
@@ -38,7 +39,7 @@ var Megaroster = function() {
     });
     self.students.push(student);
     student.appendToList();
-    
+
     self.save();
   };
 
@@ -48,11 +49,32 @@ var Megaroster = function() {
     self.load();
 
     $(document).on('click', 'button.delete',function(ev) {
-      //remove student from array
+      var li = $(this).closest('li');
 
+      //remove student from array
+      var id = li.attr('data-id');
+      // have id now must delete from array.
+
+      //things I tried over lunch... if they worked (not all did) they deleted last array item, NOT selected item... -G
+      //following line splices last entity in array no matter which "button" is clicked
+      //console.log(li.text());
+      //console.log(id);
+      //console.log($.inArray(id,self.students));  returns -1 as in it didn't find id in array
+      //console.log(self.students.splice($.inArray( li.text(), self.students), 1)); //id is not the same as index
+      //self.students.splice(self.students.indexOf(id), 1);
+      // console.log($.grep(self.students, function(e){ return e.id == id; }));
+      // self.students.splice($.inArray($.grep(self.students, function(e){ return e.id == id; }),self.students),1);
+      // self.students.splice(self.students.indexOf(current_student), 1);
+
+      $.each(self.students, function(index, current_student) {
+      if (current_student.id.toString() === id.toString()) {
+        self.students.splice(index, 1);
+        return false;
+        }
+      });
 
       //remove student from list
-      $(this).closest('li').remove();
+      li.remove();
       //Update localStorage
       self.save();
 
