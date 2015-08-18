@@ -43,28 +43,36 @@ var Megaroster = function() {
     self.save();
   };
 
+  this.createEditForm = function(ev) {
+    //console.log('It worked');
+    var li, edit_form;
+    li = $(this).closest('li');
+    label = li.find('label');
+
+    edit_form = $("#edit_form_template")
+      .clone()
+      .removeAttr('id')
+      .removeClass('hidden');
+
+    label.addClass('hidden');
+    li.find('.btn-group').addClass('hidden');
+
+    li.append(edit_form);
+
+
+  };
+
   this.init = function() {
     self.students = [];
     Student.counter = 0;
     self.load();
 
+    $(document).on('click', 'button.edit', self.createEditForm);
+
+    //delete student
     $(document).on('click', 'button.delete',function(ev) {
       var li = $(this).closest('li');
-
-      //remove student from array
       var id = li.attr('data-id');
-      // have id now must delete from array.
-
-      //things I tried over lunch... if they worked (not all did) they deleted last array item, NOT selected item... -G
-      //following line splices last entity in array no matter which "button" is clicked
-      //console.log(li.text());
-      //console.log(id);
-      //console.log($.inArray(id,self.students));  returns -1 as in it didn't find id in array
-      //console.log(self.students.splice($.inArray( li.text(), self.students), 1)); //id is not the same as index
-      //self.students.splice(self.students.indexOf(id), 1);
-      // console.log($.grep(self.students, function(e){ return e.id == id; }));
-      // self.students.splice($.inArray($.grep(self.students, function(e){ return e.id == id; }),self.students),1);
-      // self.students.splice(self.students.indexOf(current_student), 1);
 
       $.each(self.students, function(index, current_student) {
       if (current_student.id.toString() === id.toString()) {

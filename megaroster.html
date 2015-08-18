@@ -17,7 +17,12 @@
       <h1>Megaroster</h1>
       <ol id="students" class="list-group">
         <li id="list_item_template" class="list-group-item hidden">
-          <button class="btn btn-sm btn-danger delete"><i class="fa fa-trash-o"></i></button>
+          <label></label>
+          <div class="btn-group">
+            <button class="btn btn-sm btn-success edit"><i class="fa fa-pencil"></i></button>
+            <button class="btn btn-sm btn-danger delete"><i class="fa fa-trash-o"></i></button>
+          </div>
+
         </li>
       </ol>
       <form role="form" id="new_student_form" class="form-inline">
@@ -28,6 +33,12 @@
       </form>
     </div>
 
+
+  <form role="form" id="edit_form_template" class="form-inline hidden">
+    <input type="text" name="student_name" class="form-control">
+    <input type="submit" value="Save" class="btn btn-sm btn-success">
+    <button type="button" class="btn btn-sm btn-default cancel">Cancel</button>
+  </form>
 
 
 
