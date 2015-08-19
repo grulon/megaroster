@@ -45,7 +45,7 @@ var Megaroster = function() {
 
   this.createEditForm = function(ev) {
     //console.log('It worked');
-    var li, edit_form;
+    var li, edit_form, label;
     li = $(this).closest('li');
     label = li.find('label');
 
@@ -58,7 +58,33 @@ var Megaroster = function() {
     li.find('.btn-group').addClass('hidden');
 
     li.append(edit_form);
+  };
 
+  this.removeEditForm = function(ev) {
+    var li, edit_form, label;
+    li = $(this).closest('li');
+    label = li.find('label');
+
+    edit_form = $(this).closest('form');
+    edit_form.remove();
+
+    label.removeClass('hidden');
+    li.find('.btn-group').removeClass('hidden');
+  };
+
+  this.updateStudent = function(ev) {
+    ev.preventDefault();
+    var form = this;
+    // change name on student objects :
+    // 1 Grab id of the updated student  ---> Get the LI
+    var id = $(this).closest('li').attr('data-id');
+    // 2 Find the student record with that id
+    var student = Student.getStudentById(id);
+    // 3 Change its name
+    student.name = this.student_name.value;
+    // update localStorage
+    self.removeEditForm.apply(form);
+    self.save();
 
   };
 
@@ -68,6 +94,8 @@ var Megaroster = function() {
     self.load();
 
     $(document).on('click', 'button.edit', self.createEditForm);
+    $(document).on('click', 'button.cancel', self.removeEditForm);
+    $(document).on('submit', 'form.edit', self.updateStudent);
 
     //delete student
     $(document).on('click', 'button.delete',function(ev) {
@@ -80,12 +108,10 @@ var Megaroster = function() {
         return false;
         }
       });
-
       //remove student from list
       li.remove();
       //Update localStorage
       self.save();
-
     });
 
 
